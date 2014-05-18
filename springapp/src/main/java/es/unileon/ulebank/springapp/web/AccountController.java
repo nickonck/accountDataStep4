@@ -1,4 +1,4 @@
-package com.companyname.springapp.web;
+package es.unileon.ulebank.springapp.web;
 
 import java.io.IOException;
 import java.util.Date;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class HelloController {
+public class AccountController {
 
 	protected final Log logger = LogFactory.getLog(getClass());
 	

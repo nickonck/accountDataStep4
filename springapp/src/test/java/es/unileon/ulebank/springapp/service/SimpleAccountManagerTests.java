@@ -1,4 +1,4 @@
-package com.companyname.springapp.service;
+package es.unileon.ulebank.springapp.service;
 
 import static org.junit.Assert.*;
 
@@ -8,13 +8,14 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.companyname.springapp.domain.Product;
+import es.unileon.ulebank.account.Account;
+import es.unileon.ulebank.springapp.service.SimpleAccountManager;
 
-public class SimpleProductManagerTests {
+public class SimpleAccountManagerTests {
 
-	private SimpleProductManager productManager;
+	private SimpleAccountManager productManager;
 	
-	private List<Product> products;
+	private List<Account> products;
 	
 	private static int PRODUCT_COUNT = 2;
 	
@@ -28,48 +29,48 @@ public class SimpleProductManagerTests {
 	
 	@Before
 	public void setUp() throws Exception {
-		productManager = new SimpleProductManager();
-		products=new ArrayList<Product>();
+		/*productManager = new SimpleAccountManager();
+		products=new ArrayList<Account>();
 		
-		Product product = new Product();
+		Account product = new Account();
 		product.setDescription(CHAIR_DESCRIPTION);
 		product.setPrice(CHAIR_PRICE);
 		
 		products.add(product);
 		
-		product = new Product();
+		product = new Account();
 		product.setDescription(TABLE_DESCRIPTION);
 		product.setPrice(TABLE_PRICE);
 		products.add(product);
 		
-		productManager.setProducts(products);
+		productManager.setProducts(products);*/
 	}
 
 	@Test
 	public void testGetProductsWithNotProducts() {
-		productManager = new SimpleProductManager();
+		productManager = new SimpleAccountManager();
 		assertNull(productManager.getProducts());
 	}
 	
 	@Test
 	public void testGetProducts(){
-		List<Product> products = productManager.getProducts();
+	/*	List<Account> products = productManager.getProducts();
 		assertNotNull(products);
 		assertEquals(PRODUCT_COUNT, productManager.getProducts().size());
 	
-		Product product = products.get(0);
+		Account product = products.get(0);
 		assertEquals(CHAIR_DESCRIPTION, product.getDescription());
 		assertEquals(CHAIR_PRICE, product.getPrice());
 		
 		product = products.get(1);
 		assertEquals(TABLE_DESCRIPTION, product.getDescription());
-		assertEquals(TABLE_PRICE, product.getPrice());
+		assertEquals(TABLE_PRICE, product.getPrice());*/
 	}
 	
 	@Test
 	public void testIncreasePriceWithNullListOfProducts(){
 		try{
-			productManager = new SimpleProductManager();
+			productManager = new SimpleAccountManager();
 			productManager.increasePrice(POSITIVE_PRICE_INCREASE);
 		}catch (NullPointerException ex){
 			fail("Products list is null");
@@ -79,8 +80,8 @@ public class SimpleProductManagerTests {
 	@Test
 	public void testIncreasePriceWithEmptyListOfProducts(){
 		try{
-			productManager = new SimpleProductManager();
-			productManager.setProducts(new ArrayList<Product>());
+			productManager = new SimpleAccountManager();
+			productManager.setProducts(new ArrayList<Account>());
 			productManager.increasePrice(POSITIVE_PRICE_INCREASE);
 		}catch(Exception ex){
 			fail("Products list is empty");
@@ -89,15 +90,15 @@ public class SimpleProductManagerTests {
 
 	@Test
 	public void testIncreasePriceWithPositivePercentage(){
-		productManager.increasePrice(POSITIVE_PRICE_INCREASE);
+	/*	productManager.increasePrice(POSITIVE_PRICE_INCREASE);
 		double expectedChairPriceWithIncrease = 22.55;
 		double expectedTablePriceWithIncrease = 165.11;
 		
-		List<Product> products = productManager.getProducts();
-		Product product = products.get(0);
+		List<Account> products = productManager.getProducts();
+		Account product = products.get(0);
 		assertEquals(expectedChairPriceWithIncrease, product.getPrice(), 0);
 		
 		product = products.get(1);
-		assertEquals(expectedTablePriceWithIncrease, product.getPrice(), 0);
+		assertEquals(expectedTablePriceWithIncrease, product.getPrice(), 0);*/
 	}
 }

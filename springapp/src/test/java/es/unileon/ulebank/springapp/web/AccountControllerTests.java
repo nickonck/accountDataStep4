@@ -1,15 +1,17 @@
-package com.companyname.springapp.web;
+package es.unileon.ulebank.springapp.web;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.springframework.web.servlet.ModelAndView;
 
-public class HelloControllerTests {
+import es.unileon.ulebank.springapp.web.AccountController;
+
+public class AccountControllerTests {
 
 	@Test
 	public void testHandleRequestView() throws Exception{
-		HelloController controller = new HelloController();
+		AccountController controller = new AccountController();
 		ModelAndView modelAndView = controller.handleRequest(null, null);
 		assertEquals("hello", modelAndView.getViewName());
 		assertNotNull(modelAndView.getModel());
