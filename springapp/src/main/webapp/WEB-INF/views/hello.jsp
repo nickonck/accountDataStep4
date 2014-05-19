@@ -2,10 +2,13 @@
 
 <html>
 <head>
-<title>Hello :: Spring Application</title>
+<title><fmt:message key="title"/> </title>
 </head>
 <body>
-	<h1>Hello - Spring Application</h1>
-	<p>Greetings, it is now <c:out value="${now}"/></p>
+	<h1><fmt:message key="heading"/> </h1>
+	<br>
+	<p><fmt:message key="greeting"/><c:out value="${model.now}"/></p>
+	<h3>Account</h3>
+	
 </body>
 </html>

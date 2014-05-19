@@ -1,41 +1,35 @@
 package es.unileon.ulebank.account;
 
-import es.unileon.ulebank.exceptions.TransactionException;
-import es.unileon.ulebank.bank.Bank;
 import es.unileon.ulebank.client.Client;
 import es.unileon.ulebank.handler.Handler;
-import es.unileon.ulebank.handler.MalformedHandlerException;
-import es.unileon.ulebank.history.DirectDebitTransaction;
-import es.unileon.ulebank.history.GenericTransaction;
-import es.unileon.ulebank.history.History;
-import es.unileon.ulebank.history.Transaction;
-import es.unileon.ulebank.history.conditions.WrongArgsException;
-import es.unileon.ulebank.office.Office;
-import es.unileon.ulebank.time.Time;
+
+
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+
 import org.apache.log4j.Logger;
 
 /**
  *
  * @author runix
  */
-public class Account {
+public class Account implements Serializable{
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
      * The logger of the class
      */
     private static final Logger LOG = Logger.getLogger(Account.class.getName());
 
     /**
-     * The default liquidation frecuency
-     */
-    public static final int DEFAULT_LIQUIDATION_FREQUENCY = 6;
-    /**
      * The account identifier
      */
-    private final Handler id;
+    private Handler id;
 
     /**
      * The account balance
@@ -49,43 +43,11 @@ public class Account {
      * The account authorizeds
      */
     private final List<Client> authorizeds;
-    /**
-     * The account's history
-     */
-    private final History<Transaction> history;
-    /**
-     * The account's direct debit history
-     */
-    private final History<DirectDebitTransaction> directDebitHistory;
-    /**
-     * The last liquidation
-     */
-    private Date lastLiquidation;
-
-    /**
-     * The liquidation frequency in months
-     */
-    private int liquidationFrecuency;
-
-    /**
-     * The strategies
-     */
-    private final List<LiquidationStrategy> liquidationStrategies;
 
     /**
      * The max account's overdraft ( in positive )
      */
     private double maxOverdraft;
-
-    /**
-     * To know if the account is free of liquidation
-     */
-    private ExemptLiquidationStrategy<Transaction> exemptLiquidationStrategy;
-
-    /**
-     * Account's direct debits
-     */
-    private AccountDirectDebits directDebits;
 
     /**
      * Create a new account
@@ -101,52 +63,10 @@ public class Account {
      * @throws es.unileon.ulebank.history.conditions.WrongArgsException
      *
      */
-    public Account(Office office, Bank bank, String accountnumber, Client authorized) throws MalformedHandlerException, WrongArgsException {
-        this.id = new AccountHandler(office.getIdOffice(), bank.getID(), accountnumber);
-        this.titulars = new ArrayList<Client>();
-        if (!this.addTitular(authorized)) {
-            throw new WrongArgsException("There were a problem when add the authorized, may be it is null\n");
-        } else {
-            this.history = new History<Transaction>();
-            this.balance = 0.0d;
-            this.authorizeds = new ArrayList<Client>();
-            this.lastLiquidation = new Date(System.currentTimeMillis());
-            this.liquidationFrecuency = DEFAULT_LIQUIDATION_FREQUENCY;
-            this.liquidationStrategies = new ArrayList<LiquidationStrategy>();
-            this.directDebitHistory = new History<DirectDebitTransaction>();
-            this.maxOverdraft = 0;
-            this.directDebits = new AccountDirectDebits();
-        }
-        LOG.info("Create a new account with number " + accountnumber + " office " + office.getIdOffice().toString() + " bank " + bank.getID());
-    }
 
-    /**
-     * Set the liquidation frecuency in months
-     *
-     * ( Default {
-     *
-     * @see DEFAULT_LIQUIDATION_FREQUENCY} )
-     *
-     * @param liquidationFrecuency ( new liquidation frecuency )
-     *
-     * @return (true if success, false if the param is negative or zero)
-     */
-    public boolean setLiquidationFrecuency(int liquidationFrecuency) {
-        if (liquidationFrecuency >= 1) {
-            LOG.info("Change liquidation frecuency to " + liquidationFrecuency);
-            this.liquidationFrecuency = liquidationFrecuency;
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Get liquidation frecuency
-     *
-     * @return
-     */
-    public int getLiquidationFrecuency() {
-        return this.liquidationFrecuency;
+    public Account(){
+    	this.authorizeds = new ArrayList<Client>();
+    	this.titulars = new ArrayList<Client>();
     }
 
     /**
@@ -176,20 +96,20 @@ public class Account {
      */
     public boolean addTitular(Client client) {
         boolean found = false;
-        if (client == null || client.getId() == null) {
+        if (client == null || client.getDni() == null) {
             found = true;
         } else {
             int i = 0;
             while (i < this.titulars.size() && !found) {
-                if (this.titulars.get(i++).getId().compareTo(client.getId()) == 0) {
+                if (this.titulars.get(i++).getDni().compareTo(client.getDni()) == 0) {
                     found = true;
                 }
             }
             if (!found) {
-                LOG.info(("Add new titular " + client.getId()));
+                LOG.info(("Add new titular " + client.getDni()));
                 this.titulars.add(client);
             } else {
-                LOG.error("Cannot add the titular " + client.getId().toString() + " , the titular already exists");
+                LOG.error("Cannot add the titular " + client.getDni().toString() + " , the titular already exists");
             }
         }
         return !found;
@@ -206,7 +126,7 @@ public class Account {
      *
      * @return ( true if success, false otherwise )
      */
-    public boolean deleteTitular(Handler id) {
+    public boolean deleteTitular(String dni) {
         boolean found = false;
         int i = 0;
         StringBuilder err = new StringBuilder();
@@ -214,7 +134,7 @@ public class Account {
             err.append("Error, the account must have at least one titular\n");
         } else {
             while (i < this.titulars.size() && !found) {
-                if (this.titulars.get(i++).getId().compareTo(id) == 0) {
+                if (this.titulars.get(i++).getDni().compareTo(dni) == 0) {
                     LOG.info("Delete " + id.toString() + " titular");
                     this.titulars.remove(i);
                     found = true;
@@ -246,15 +166,15 @@ public class Account {
         boolean found = false;
         int i = 0;
         while (i < this.authorizeds.size() && !found) {
-            if (this.authorizeds.get(i++).getId().compareTo(authorized.getId()) == 0) {
+            if (this.authorizeds.get(i++).getDni().compareTo(authorized.getDni()) == 0) {
                 found = true;
             }
         }
         if (!found) {
-            LOG.info(("Add new authorized " + authorized.getId()));
+            LOG.info(("Add new authorized " + authorized.getDni()));
             this.authorizeds.add(authorized);
         } else {
-            LOG.error("Cannot add the authorized " + authorized.getId().toString() + " , the authorized already exists");
+            LOG.error("Cannot add the authorized " + authorized.getDni().toString() + " , the authorized already exists");
         }
         return !found;
     }
@@ -270,11 +190,11 @@ public class Account {
      *
      * @return ( true if success, else false )
      */
-    public boolean deleteAuthorized(Handler id) {
+    public boolean deleteAuthorized(String dni) {
         boolean found = false;
         int i = 0;
         while (i < this.authorizeds.size() && !found) {
-            if (this.authorizeds.get(i++).getId().compareTo(id) == 0) {
+            if (this.authorizeds.get(i++).getDni().compareTo(dni) == 0) {
                 LOG.info("Delete " + id.toString() + " authorized");
                 this.authorizeds.remove(i);
                 found = true;
@@ -320,168 +240,8 @@ public class Account {
      *
      * @return (the account's overdraft )
      */
-    public final double getMaxOverdraft() {
+    public double getMaxOverdraft() {
         return this.maxOverdraft;
-    }
-
-    /**
-     * Do a direct debit. The Transaction is added in the direct transaction
-     * history and in the common history.
-     *
-     * @see es.unileon.ulebank.account.Account.doTransaction
-     *
-     * @param transaction ( transaction to do )
-     *
-     * @throws TransactionException ( if the max overdraft is reached or sth
-     * like that ( see doTransaction exception )
-     */
-    public synchronized void doDirectDebit(DirectDebitTransaction transaction) throws TransactionException {
-        this.doTransaction(transaction);
-        this.directDebitHistory.add(transaction);
-    }
-
-    /**
-     * Do a transaction. The transaction's amount and the account's amount is
-     * added, so, if the transaction's amount is negative the balance is
-     * decrease.
-     *
-     * @param transaction ( transaction to do )
-     *
-     * @throws TransactionException ( if the max overdraft is reached )
-     */
-    public synchronized void doTransaction(Transaction transaction) throws TransactionException {
-        StringBuilder err = new StringBuilder();
-
-        if (balance + transaction.getAmount() < -this.maxOverdraft) {
-            err.append("Cannot withdrawal money, max overdraft reached. Max overdraft = ").append(this.maxOverdraft).append("\n");
-        }
-
-        if (err.length() > 0) {
-            throw new TransactionException(err.toString());
-        }
-
-        boolean success = this.history.add(transaction);
-        if (success) {
-            this.balance += transaction.getAmount();
-        } else {
-            String error = "Cannot store the transaction\n";
-            LOG.error(error);
-            throw new TransactionException(error);
-        }
-    }
-
-    /**
-     * Add a new liquidation strategy. The liquidation's id must be unique, so,
-     * if there is a transaction with the same id the method return false and
-     * the strategy won't be added
-     *
-     * @param strategy (strategy to add)
-     * @return ( true if sucess, false otherwise )
-     */
-    public boolean addLiquidationStrategy(LiquidationStrategy strategy) {
-        int i = 0;
-        boolean found = false;
-        while (i < this.liquidationStrategies.size() && !found) {
-            if (this.liquidationStrategies.get(i++).getID().compareTo(strategy.getID()) == 0) {
-                found = true;
-            }
-        }
-        if (!found) {
-            this.liquidationStrategies.add(strategy);
-        }
-        return !found;
-    }
-
-    /**
-     * Delete the liquidation strategy with specified id.
-     *
-     * @param id ( liquidation trategy's id)
-     *
-     * @return ( true if sucess, false otherwise )
-     */
-    public boolean deleteLiquidationStrategy(Handler id) {
-        int i = 0;
-        boolean found = false;
-        while (i < this.liquidationStrategies.size() && !found) {
-            if (this.liquidationStrategies.get(i++).getID().compareTo(id) == 0) {
-                this.liquidationStrategies.remove(i);
-                found = true;
-            }
-        }
-        return found;
-    }
-
-    /**
-     * Perform account liquidation.
-     *
-     * @param office
-     */
-    public void doLiquidation(Office office) {
-        StringBuilder err = new StringBuilder();
-        try {
-            AccountHandler ah = new AccountHandler(this.id);
-            if (office.getIdOffice().compareTo(ah.getOfficeHandler()) == 0) {
-                if (this.exemptLiquidationStrategy == null || !this.exemptLiquidationStrategy.isExempt(this.history.getIterator(), this.directDebitHistory.getIterator(), this.directDebits)) {
-                    Date now = new Date(Time.getInstance().getTime());
-                    for (int i = 0; i < this.liquidationStrategies.size(); i++) {
-                        //Substract from account and add in other ?
-                        //Account office, -t transaction for office ?
-                        Transaction t = this.liquidationStrategies.get(i).doLiquidation(this.history.getIterator(), lastLiquidation, now);
-                        Transaction tNeg = new GenericTransaction(-t.getAmount(), t.getDate(), t.getSubject());
-                        tNeg.setEffectiveDate(t.getEffectiveDate());
-                        try {
-                            this.doTransaction(t);
-                        } catch (TransactionException ex) {
-                            LOG.error(ex);
-                        }
-                    }
-                    this.lastLiquidation = now;
-                }
-            } else {
-                err.append("Wrong office\n");
-            }
-        } catch (MalformedHandlerException e) {
-            err.append("Error while parsing handler\n");
-        }
-
-        if (err.length() > 0) {
-//            throw new... ?
-        }
-    }
-
-    /**
-     * Get the account's transactions
-     *
-     * @return (The transactions)
-     */
-    public History getHistory() {
-        return this.history;
-    }
-
-    /**
-     * Get the direct debit transactions
-     *
-     * @return
-     */
-    public History<DirectDebitTransaction> getDirectDebitHistory() {
-        return this.directDebitHistory;
-    }
-
-    /**
-     * Get the ExemptLiquidationStrategy
-     *
-     * @return
-     */
-    public ExemptLiquidationStrategy<Transaction> getExemptLiquidationStrategy() {
-        return exemptLiquidationStrategy;
-    }
-
-    /**
-     *
-     * @param exemptLiquidationStrategy ( Strategy to set)
-     */
-    public void setExemptLiquidationStrategy(ExemptLiquidationStrategy<Transaction> exemptLiquidationStrategy) {
-        this.exemptLiquidationStrategy = exemptLiquidationStrategy;
     }
 
     /**
@@ -492,5 +252,9 @@ public class Account {
      */
     public final Handler getID() {
         return this.id;
+    }
+    
+    public void setId(Handler accountHandler){
+    	this.id=accountHandler;
     }
 }
