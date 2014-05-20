@@ -18,13 +18,11 @@ public class ErrorDeletingController {
 
 	@RequestMapping(method = RequestMethod.POST)
     public String onSubmit(@Validated Object obj, BindingResult result){
-		System.out.println("Submit");
 		return "redirect:account.htm";
     }
 	
 	@RequestMapping(method = RequestMethod.GET)
     protected Object formBackingObject(HttpServletRequest request) throws ServletException{
-    	System.out.println("Controller");
 		return new Object();
   }
 }

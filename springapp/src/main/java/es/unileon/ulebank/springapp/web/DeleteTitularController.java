@@ -33,7 +33,6 @@ public class DeleteTitularController {
     		return "deletetitular";
     	}
     	if(!accountManager.removeTitular(dniData.getDni())){
-    		System.out.println("Error al eliminar");
     		return "redirect:errordeleting.htm";
     	}
     	

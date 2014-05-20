@@ -33,7 +33,6 @@ public class DeleteAuthorizedController {
     		return "deleteauthorized";
     	}
     	if(!accountManager.removeAuthorized(dniData.getDni())){
-    		System.out.println("Error al eliminar");
     		return "redirect:errordeleting.htm";
     	}
     	
