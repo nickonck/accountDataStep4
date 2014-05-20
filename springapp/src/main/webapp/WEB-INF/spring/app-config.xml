@@ -22,12 +22,6 @@
        		<ref bean="accountHandler"/>
        	</property>
        	<property name="maxOverdraft" value="0.0"/>
-       	<property name="titulars">
-       	<list>
-       		<ref bean="titular1"/>
-       		<ref bean="titular2"/>
-       	</list>
-       </property>
        </bean>
        
        <bean id="accountHandler" class="es.unileon.ulebank.account.AccountHandler">
@@ -35,16 +29,6 @@
        <property name="bank" value="2009"/>
        <property name="office" value="4376"/>
        <property name="dc" value="14"/>
-       </bean>
-       
-       <bean id="titular1" class="es.unileon.ulebank.client.Client">
-       <property name="dni" value="71464984M"/>
-       <property name="name" value="gonzalo nicolas"/>
-       </bean>
-       
-       <bean id="titular2" class="es.unileon.ulebank.client.Client">
-       <property name="dni" value="71464984g"/>
-       <property name="name" value="gonzalo barreales"/>
        </bean>
        
        <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">

@@ -138,11 +138,13 @@ public class Account implements Serializable{
             err.append("Error, the account must have at least one titular\n");
         } else {
             while (i < this.titulars.size() && !found) {
-                if (this.titulars.get(i++).getDni().compareTo(dni) == 0) {
-                    LOG.info("Delete " + id.toString() + " titular");
+                if (this.titulars.get(i).getDni().compareTo(dni) == 0) {
+                    LOG.info("Delete " + dni.toString() + " titular");
+                    System.out.println("Delete " + this.titulars.get(i).getDni() + " titular");
                     this.titulars.remove(i);
                     found = true;
                 }
+                i++;
             }
             if (!found) {
                 err.append("Cannot remove the titular ").append(id.toString()).append(" because it doesn't exist");
@@ -198,11 +200,12 @@ public class Account implements Serializable{
         boolean found = false;
         int i = 0;
         while (i < this.authorizeds.size() && !found) {
-            if (this.authorizeds.get(i++).getDni().compareTo(dni) == 0) {
+            if (this.authorizeds.get(i).getDni().compareTo(dni) == 0) {
                 LOG.info("Delete " + id.toString() + " authorized");
                 this.authorizeds.remove(i);
                 found = true;
             }
+            i++;
         }
         if (!found) {
             LOG.error("Cannot remove the authorized " + id.toString() + " because it doesn't exist");

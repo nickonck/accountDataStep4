@@ -28,8 +28,8 @@ public class SimpleAccountManager implements AccountManager {
 	}
 
 	@Override
-	public void removeTitular(String clientDni) {
-		account.deleteTitular(clientDni);
+	public boolean removeTitular(String clientDni) {
+		return account.deleteTitular(clientDni);
 		
 	}
 
@@ -39,8 +39,8 @@ public class SimpleAccountManager implements AccountManager {
 	}
 
 	@Override
-	public void removeAuthorized(String clientDni) {
-		account.deleteAuthorized(clientDni);
+	public boolean removeAuthorized(String clientDni) {
+		return account.deleteAuthorized(clientDni);
 		
 	}
 

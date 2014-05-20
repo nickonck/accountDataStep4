@@ -11,12 +11,11 @@ public interface AccountManager extends Serializable{
 	
 	public void addTitular(Client titular);
 	
-	public void removeTitular(String clientDni);
+	public boolean removeTitular(String clientDni);
 	
 	public void addAuthorized(Client authorized);
 	
-	public void removeAuthorized(String clientDni);
+	public boolean removeAuthorized(String clientDni);
 	
 	public void changeOverdraft(double newOverdraft);
-	
 }
