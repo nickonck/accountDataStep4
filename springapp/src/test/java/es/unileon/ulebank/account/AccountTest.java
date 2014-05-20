@@ -1,40 +1,155 @@
-/* Application developed for AW subject, belonging to passive operations
- group.*/
 package es.unileon.ulebank.account;
 
-import es.unileon.ulebank.client.Client;
-import es.unileon.ulebank.handler.GenericHandler;
-import es.unileon.ulebank.handler.Handler;
-import java.util.Date;
-import java.util.Iterator;
+import static org.junit.Assert.*;
+
+import java.util.ArrayList;
 import java.util.List;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+
 import org.junit.Before;
 import org.junit.Test;
 
+import es.unileon.ulebank.client.Client;
+
 public class AccountTest {
 
-    private static final double EPSILON = 0.00001;
+	private Account myAccount;
+	private Client client1;
+	private Client client2;
+	private Client client3;
+	
+	private static String DNI_1="67954765K";
+	private static String DNI_2="09845764E";
+	
+	private static String ACCOUNT_NUMBER="98765432";
+	private static String BANK_NUMBER="2098";
+	private static String OFFICE_NUMBER="9876";
+	private static String DC_NUMBER="14";
+	
+	@Before
+	public void setUp() throws Exception {
+		myAccount= new Account();
+		AccountHandler handler=new AccountHandler();
+		handler.setAccountNumber(ACCOUNT_NUMBER);
+		handler.setBank(BANK_NUMBER);
+		handler.setDc(DC_NUMBER);
+		handler.setOffice(OFFICE_NUMBER);
+		myAccount.setId(handler);
+		
+		client1=new Client();
+		client1.setDni(DNI_1);
+		client1.setName("pepito");
+		
+		client2= new Client();
+		client2.setDni(DNI_2);
+		client2.setName("jaimito");
+		
+		client3= new Client();
+		client3.setDni(DNI_1);
+		client3.setName("luisito");
+	}
 
-    private Account commercialAccount;
-   
-    private Client titular1;
-    private Client titular2;
-    private Client authorized1;
-    private Client authorized2;
-    private Handler titularHandler1;
-    private Handler titularHandler2;
-    private Handler authorizedHandler1;
-    private Handler authorizedHandler2;
+	@Test
+	public void testAccount() {
+		Account account=null;
+		account = new Account();
+		assertNotNull(account);
+	}
 
-    private String accountNumber = "0000000000";
+	@Test
+	public void testSetMaxOverdraft() {
+		myAccount.setMaxOverdraft(100);
+		assertTrue(myAccount.getMaxOverdraft()==100.0);
+		myAccount.setMaxOverdraft(-1);
+		assertFalse(myAccount.getMaxOverdraft()==-1);
+		myAccount.setMaxOverdraft(0);
+		assertTrue(myAccount.getMaxOverdraft()==0);
+	}
 
-    @Before
-    public void setUp(){
-        
-    }
+	@Test
+	public void testAddTitular() {
+		
+		
+		myAccount.addTitular(client1);
+		assertTrue(myAccount.existsTitular(DNI_1));
+		assertEquals(myAccount.titularsSize(),1);
+		
+		myAccount.addTitular(client2);
+		assertTrue(myAccount.existsTitular(DNI_2));
+		assertEquals(myAccount.titularsSize(),2);
+		
+		myAccount.addTitular(client3);
+		assertEquals(myAccount.titularsSize(),2);
+	}
+
+	@Test
+	public void testSetTitulars() {
+		List<Client> clients= new ArrayList<Client>();
+		clients.add(client1);
+		clients.add(client2);
+		myAccount.setTitulars(clients);
+		assertTrue(myAccount.existsTitular(DNI_1));
+		assertTrue(myAccount.existsTitular(DNI_2));
+		assertEquals(myAccount.titularsSize(),2);
+	}
+
+	@Test
+	public void testDeleteTitular() {
+		List<Client> clients= new ArrayList<Client>();
+		clients.add(client1);
+		clients.add(client2);
+		myAccount.setTitulars(clients);
+		assertTrue(myAccount.deleteTitular(DNI_1));
+		assertFalse(myAccount.existsTitular(DNI_1));
+		assertFalse(myAccount.deleteTitular(DNI_2));
+		assertTrue(myAccount.existsTitular(DNI_2));
+		assertFalse(myAccount.deleteTitular(DNI_1));
+		
+	}
+
+	@Test
+	public void testAddAuthorized() {
+		myAccount.addAuthorized(client1);
+		assertTrue(myAccount.existsAuthorized(DNI_1));
+		assertEquals(myAccount.authorizedSize(),1);
+		
+		myAccount.addAuthorized(client2);
+		assertTrue(myAccount.existsAuthorized(DNI_2));
+		assertEquals(myAccount.authorizedSize(),2);
+		
+		myAccount.addAuthorized(client3);
+		assertEquals(myAccount.authorizedSize(),2);
+	}
+
+	@Test
+	public void testDeleteAuthorized() {
+		List<Client> clients= new ArrayList<Client>();
+		clients.add(client1);
+		clients.add(client2);
+		myAccount.setAuthorizeds(clients);
+		assertTrue(myAccount.deleteAuthorized(DNI_1));
+		assertFalse(myAccount.existsAuthorized(DNI_1));
+		assertTrue(myAccount.deleteAuthorized(DNI_2));
+		assertFalse(myAccount.existsAuthorized(DNI_2));
+		assertFalse(myAccount.deleteAuthorized(DNI_2));
+		assertFalse(myAccount.deleteAuthorized(DNI_1));
+		
+	}
+
+	@Test
+	public void testGetBalance() {
+		assertTrue(myAccount.getBalance()==0.0);
+	}
+
+	@Test
+	public void testGetMaxOverdraft() {
+		assertTrue(myAccount.getMaxOverdraft()==0.0);
+		myAccount.setMaxOverdraft(100);
+		assertTrue(myAccount.getMaxOverdraft()==100.0);
+	}
+
+	@Test
+	public void testGetId() {
+		assertEquals(myAccount.getId().toString().compareTo(BANK_NUMBER+"-"+OFFICE_NUMBER+"-"+DC_NUMBER+"-"+ACCOUNT_NUMBER),0);
+	}
 
 }

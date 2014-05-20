@@ -23,7 +23,7 @@ public class SimpleAccountManager implements AccountManager {
 
 	@Override
 	public void addTitular(Client titular) {
-		account.add(titular);
+		account.addTitular(titular);
 		
 	}
 

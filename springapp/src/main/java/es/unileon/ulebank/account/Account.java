@@ -42,7 +42,7 @@ public class Account implements Serializable{
     /**
      * The account authorizeds
      */
-    private final List<Client> authorizeds;
+    private List<Client> authorizeds;
 
     /**
      * The max account's overdraft ( in positive )
@@ -94,7 +94,7 @@ public class Account implements Serializable{
      *
      * @return ( true if success, else false )
      */
-    public boolean add(Client titular) {
+    public boolean addTitular(Client titular) {
         boolean found = false;
         if (titular == null || titular.getDni() == null) {
             found = true;
@@ -140,7 +140,6 @@ public class Account implements Serializable{
             while (i < this.titulars.size() && !found) {
                 if (this.titulars.get(i).getDni().compareTo(dni) == 0) {
                     LOG.info("Delete " + dni.toString() + " titular");
-                    System.out.println("Delete " + this.titulars.get(i).getDni() + " titular");
                     this.titulars.remove(i);
                     found = true;
                 }
@@ -264,4 +263,41 @@ public class Account implements Serializable{
     public void setId(Handler accountHandler){
     	this.id=accountHandler;
     }
+    
+    public int titularsSize(){
+    	return titulars.size();
+    }
+    
+    public boolean existsTitular(String dni){
+    	boolean exists=false;
+    	int i=0;
+    	while(!exists && i<titulars.size()){
+    		if(titulars.get(i).getDni().compareTo(dni)==0){
+    			exists=true;
+    		}
+    		i++;
+    	}
+    	return exists;
+    }
+    
+    public int authorizedSize(){
+    	return authorizeds.size();
+    }
+    
+    public boolean existsAuthorized(String dni){
+    	boolean exists=false;
+    	int i=0;
+    	while(!exists && i<authorizeds.size()){
+    		if(authorizeds.get(i).getDni().compareTo(dni)==0){
+    			exists=true;
+    		}
+    		i++;
+    	}
+    	return exists;
+    }
+
+	public void setAuthorizeds(List<Client> clients) {
+		this.authorizeds=clients;
+		
+	}
 }
