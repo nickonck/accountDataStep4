@@ -38,7 +38,7 @@ public class Account implements Serializable{
     /**
      * The account titulars
      */
-    private final List<Client> titulars;
+    private List<Client> titulars;
     /**
      * The account authorizeds
      */
@@ -94,25 +94,29 @@ public class Account implements Serializable{
      *
      * @return ( true if success, else false )
      */
-    public boolean addTitular(Client client) {
+    public boolean add(Client titular) {
         boolean found = false;
-        if (client == null || client.getDni() == null) {
+        if (titular == null || titular.getDni() == null) {
             found = true;
         } else {
             int i = 0;
             while (i < this.titulars.size() && !found) {
-                if (this.titulars.get(i++).getDni().compareTo(client.getDni()) == 0) {
+                if (this.titulars.get(i++).getDni().compareTo(titular.getDni()) == 0) {
                     found = true;
                 }
             }
             if (!found) {
-                LOG.info(("Add new titular " + client.getDni()));
-                this.titulars.add(client);
+                LOG.info(("Add new titular " + titular.getDni()));
+                this.titulars.add(titular);
             } else {
-                LOG.error("Cannot add the titular " + client.getDni().toString() + " , the titular already exists");
+                LOG.error("Cannot add the titular " + titular.getDni().toString() + " , the titular already exists");
             }
         }
         return !found;
+    }
+    
+    public void setTitulars(List<Client> titulars){
+    	this.titulars=titulars;
     }
 
     /**
@@ -250,7 +254,7 @@ public class Account implements Serializable{
      * @return (the account id)
      * @author runix
      */
-    public final Handler getID() {
+    public final Handler getId() {
         return this.id;
     }
     

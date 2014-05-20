@@ -26,7 +26,7 @@ public class AccountController {
 	@Autowired
 	private AccountManager accountManager;
 	
-	@RequestMapping(value="/hello.htm")
+	@RequestMapping(value="/account.htm")
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException{
 		
@@ -36,6 +36,10 @@ public class AccountController {
 		myModel.put("account", this.accountManager.getAccount());
 		logger.info("Returning hello view " + now);
 		
-		return new ModelAndView("hello", "now", now);
+		return new ModelAndView("account", "model", myModel);
+	}
+	
+	public void setAccountManager(AccountManager accountManager){
+		this.accountManager = accountManager;
 	}
 }

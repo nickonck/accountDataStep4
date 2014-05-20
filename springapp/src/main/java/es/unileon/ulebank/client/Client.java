@@ -3,10 +3,6 @@
 
 package es.unileon.ulebank.client;
 
-import es.unileon.ulebank.account.Account;
-import es.unileon.ulebank.handler.Handler;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  *Class tha provides the basic gestion data of a client in a bank

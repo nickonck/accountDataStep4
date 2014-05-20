@@ -4,7 +4,6 @@ package es.unileon.ulebank.account;
 
 import es.unileon.ulebank.handler.GenericHandler;
 import es.unileon.ulebank.handler.Handler;
-import es.unileon.ulebank.handler.MalformedHandlerException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
@@ -20,7 +19,7 @@ public class AccountHandlerTest {
     
 
     @Before
-    public void setUp() throws MalformedHandlerException {
+    public void setUp(){
         
     }
 

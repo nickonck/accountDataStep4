@@ -2,12 +2,8 @@
  group.*/
 package es.unileon.ulebank.account;
 
-import es.unileon.ulebank.handler.GenericHandler;
 import es.unileon.ulebank.handler.Handler;
-import es.unileon.ulebank.handler.MalformedHandlerException;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  *

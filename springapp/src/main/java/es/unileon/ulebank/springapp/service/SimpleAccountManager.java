@@ -1,10 +1,8 @@
 package es.unileon.ulebank.springapp.service;
 
-import java.util.List;
 
 import es.unileon.ulebank.account.Account;
 import es.unileon.ulebank.client.Client;
-import es.unileon.ulebank.handler.Handler;
 
 public class SimpleAccountManager implements AccountManager {
 
@@ -25,32 +23,30 @@ public class SimpleAccountManager implements AccountManager {
 
 	@Override
 	public void addTitular(Client titular) {
-		// TODO Auto-generated method stub
+		account.add(titular);
 		
 	}
 
 	@Override
-	public void removeTitular(Handler clientHandler) {
-		// TODO Auto-generated method stub
+	public void removeTitular(String clientDni) {
+		account.deleteTitular(clientDni);
 		
 	}
 
 	@Override
 	public void addAuthorized(Client authorized) {
-		// TODO Auto-generated method stub
-		
+		account.addAuthorized(authorized);
 	}
 
 	@Override
-	public void removeAuthorized(Handler clientHandler) {
-		// TODO Auto-generated method stub
+	public void removeAuthorized(String clientDni) {
+		account.deleteAuthorized(clientDni);
 		
 	}
 
 	@Override
 	public void changeOverdraft(double overdraft) {
-		// TODO Auto-generated method stub
-		
+		account.setMaxOverdraft(overdraft);		
 	}
 	
 

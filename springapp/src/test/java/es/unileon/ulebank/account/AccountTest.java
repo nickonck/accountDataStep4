@@ -5,7 +5,6 @@ package es.unileon.ulebank.account;
 import es.unileon.ulebank.client.Client;
 import es.unileon.ulebank.handler.GenericHandler;
 import es.unileon.ulebank.handler.Handler;
-import es.unileon.ulebank.handler.MalformedHandlerException;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
