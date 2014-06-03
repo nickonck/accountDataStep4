@@ -62,11 +62,13 @@ public class SimpleAccountManager implements AccountManager {
 		List<Client> clients = clientDao.getClientList();
 		Client client = null;
 		boolean result = false;
-		for(int i=0; i<clients.size();i++){
+		int i=0;
+		while(!result && i<clients.size()){
 			client=clients.get(i);
 			if(client.getDni().compareTo(clientDni)==0){
 				result=true;
 			}
+			i++;
 		}
 		if(result){
 //			accountDao.getAccountList().get(0).deleteTitular(clientDni);
