@@ -12,6 +12,7 @@ import es.unileon.ulebank.account.Account;
 import es.unileon.ulebank.account.AccountHandler;
 import es.unileon.ulebank.client.Client;
 import es.unileon.ulebank.springapp.repository.InMemoryAccountDao;
+import es.unileon.ulebank.springapp.repository.InMemoryClientDao;
 
 public class SimpleAccountManagerTest {
 
@@ -43,6 +44,7 @@ public class SimpleAccountManagerTest {
 		ArrayList<Account> accounts = new ArrayList<Account>();
 		accounts.add(myAccount);
 		accountManager.setAccountDao(new InMemoryAccountDao(accounts));
+		accountManager.setClientDao(new InMemoryClientDao());
 		
 		client1=new Client();
 		client1.setDni(DNI_1);
@@ -55,6 +57,7 @@ public class SimpleAccountManagerTest {
 		client3= new Client();
 		client3.setDni(DNI_1);
 		client3.setName("luisito");
+		
 	}
 
 	@Test
