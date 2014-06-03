@@ -36,9 +36,4 @@ CREATE TABLE clients (
 			ON UPDATE CASCADE
 );
 
-DROP TABLE clients
-
-DROP TABLE accounts
-
-DROP TABLE accountHandlers
 

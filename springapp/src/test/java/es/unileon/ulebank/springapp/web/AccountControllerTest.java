@@ -2,6 +2,7 @@ package es.unileon.ulebank.springapp.web;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import org.junit.Before;
@@ -10,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import es.unileon.ulebank.account.Account;
 import es.unileon.ulebank.account.AccountHandler;
+import es.unileon.ulebank.springapp.repository.InMemoryAccountDao;
 import es.unileon.ulebank.springapp.service.SimpleAccountManager;
 
 public class AccountControllerTest {
@@ -34,8 +36,9 @@ public class AccountControllerTest {
 		handler.setDc(DC_NUMBER);
 		handler.setOffice(OFFICE_NUMBER);
 		myAccount.setAccountHandler(handler);
-		
-		accountManager.setAccount(myAccount);
+		ArrayList<Account> accounts = new ArrayList<Account>();
+		accounts.add(myAccount);
+		accountManager.setAccountDao(new InMemoryAccountDao(accounts));
 		controller.setAccountManager(accountManager);
 	}
 

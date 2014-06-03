@@ -10,4 +10,6 @@ public interface ClientDao {
 	public List<Client> getClientList();
 	
 	public void saveClient(Client client);
+
+	void removeClient(Client client);
 }

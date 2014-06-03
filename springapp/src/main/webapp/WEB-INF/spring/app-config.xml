@@ -11,26 +11,6 @@
        http://www.springframework.org/schema/mvc
        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
        
-       <bean id="accountManager" class="es.unileon.ulebank.springapp.service.SimpleAccountManager">
-       <property name="account">
-       		<ref bean="myAccount"/>
-       </property>
-       </bean>
-       
-       <bean id="myAccount" class="es.unileon.ulebank.account.Account">
-       	<property name="accountHandler">
-       		<ref bean="accountHandler"/>
-       	</property>
-       	<property name="maxOverdraft" value="0.0"/>
-       </bean>
-       
-       <bean id="accountHandler" class="es.unileon.ulebank.account.AccountHandler">
-       <property name="accountNumber" value="12345678"/>
-       <property name="bank" value="2009"/>
-       <property name="office" value="4376"/>
-       <property name="dc" value="14"/>
-       </bean>
-       
        <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
          <property name="basename" value="messages"/>
        </bean>

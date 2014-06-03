@@ -32,5 +32,11 @@ public class JPAClientDao implements ClientDao{
 	public void saveClient(Client client) {
 		em.merge(client);
 	}
+	
+	@Override
+	@Transactional(readOnly = false)
+	public void removeClient(Client client){
+		em.remove(em.merge(client));
+	}
 
 }

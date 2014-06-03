@@ -2,12 +2,16 @@ package es.unileon.ulebank.springapp.service;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+
 import org.junit.Before;
 import org.junit.Test;
 
+import antlr.collections.List;
 import es.unileon.ulebank.account.Account;
 import es.unileon.ulebank.account.AccountHandler;
 import es.unileon.ulebank.client.Client;
+import es.unileon.ulebank.springapp.repository.InMemoryAccountDao;
 
 public class SimpleAccountManagerTest {
 
@@ -36,8 +40,9 @@ public class SimpleAccountManagerTest {
 		handler.setDc(DC_NUMBER);
 		handler.setOffice(OFFICE_NUMBER);
 		myAccount.setAccountHandler(handler);
-		
-		accountManager.setAccount(myAccount);
+		ArrayList<Account> accounts = new ArrayList<Account>();
+		accounts.add(myAccount);
+		accountManager.setAccountDao(new InMemoryAccountDao(accounts));
 		
 		client1=new Client();
 		client1.setDni(DNI_1);
@@ -55,7 +60,9 @@ public class SimpleAccountManagerTest {
 	@Test
 	public void testGetAndSetAccount() {
 		accountManager= new SimpleAccountManager();
-		accountManager.setAccount(myAccount);
+		ArrayList<Account> accounts = new ArrayList<Account>();
+		accounts.add(myAccount);
+		accountManager.setAccountDao(new InMemoryAccountDao(accounts));
 		assertNotNull(accountManager.getAccount());
 	}
 
@@ -70,7 +77,7 @@ public class SimpleAccountManagerTest {
 	@Test
 	public void testRemoveTitular() {
 		accountManager.addTitular(client1);
-		assertFalse(accountManager.removeTitular(DNI_1));
+		assertTrue(accountManager.removeTitular(DNI_1));
 		accountManager.addTitular(client2);
 		assertTrue(accountManager.removeTitular(DNI_2));
 	}
