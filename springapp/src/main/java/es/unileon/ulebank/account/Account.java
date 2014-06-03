@@ -4,14 +4,19 @@ import es.unileon.ulebank.client.Client;
 import es.unileon.ulebank.handler.Handler;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
@@ -40,9 +45,13 @@ public class Account implements Serializable{
      * The account identifier
      */
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private BigInteger id;
+    
     @OneToOne
-    @PrimaryKeyJoinColumn(name = "id", referencedColumnName = "Id")
-    private AccountHandler id;
+    @JoinColumn(name = "id")
+    private AccountHandler accountHandler;
 
     /**
      * The account balance
@@ -51,11 +60,9 @@ public class Account implements Serializable{
     /**
      * The account titulars
      */
+    @OneToMany (mappedBy="account")
     private List<Client> titulars;
-    /**
-     * The account authorizeds
-     */
-    private List<Client> authorizeds;
+
 
     /**
      * The max account's overdraft ( in positive )
@@ -78,12 +85,24 @@ public class Account implements Serializable{
      */
 
     public Account(){
-    	this.authorizeds = new ArrayList<Client>();
     	this.titulars = new ArrayList<Client>();
     }
- 
+    
+    
 
-    /**
+    public BigInteger getId() {
+		return id;
+	}
+
+
+
+	public void setId(BigInteger id) {
+		this.id = id;
+	}
+
+
+
+	/**
      * Set the max account's overdraft
      *
      * @param maxOverdraft ( the account's overdraft ( in positive ))
@@ -170,63 +189,8 @@ public class Account implements Serializable{
         return found;
     }
 
-    /**
-     *
-     * Add a new authorized. The authorized cannot be repeated, that is, two
-     * authorized cannot have the same id, because its id is unique.If we try to
-     * add a person that is already added the method return false.
-     *
-     *
-     * @param authorized ( authorized to add)
-     *
-     * @return ( true if success, else false )
-     */
-    public boolean addAuthorized(Client authorized) {
-        boolean found = false;
-        int i = 0;
-        while (i < this.authorizeds.size() && !found) {
-            if (this.authorizeds.get(i++).getDni().compareTo(authorized.getDni()) == 0) {
-                found = true;
-            }
-        }
-        if (!found) {
-            LOG.info(("Add new authorized " + authorized.getDni()));
-            this.authorizeds.add(authorized);
-        } else {
-            LOG.error("Cannot add the authorized " + authorized.getDni().toString() + " , the authorized already exists");
-        }
-        return !found;
-    }
 
-    /**
-     *
-     * Delete a authorized. If the authorized hadn't been added, the method
-     * return false.
-     *
-     * @see es.unileon.ulebank.handler.Handler}.
-     *
-     * @param id ( The authorized id )
-     *
-     * @return ( true if success, else false )
-     */
-    public boolean deleteAuthorized(String dni) {
-        boolean found = false;
-        int i = 0;
-        while (i < this.authorizeds.size() && !found) {
-            if (this.authorizeds.get(i).getDni().compareTo(dni) == 0) {
-                LOG.info("Delete " + id.toString() + " authorized");
-                this.authorizeds.remove(i);
-                found = true;
-            }
-            i++;
-        }
-        if (!found) {
-            LOG.error("Cannot remove the authorized " + id.toString() + " because it doesn't exist");
-        }
-        return found;
-    }
-
-    /**
+   /**
      * Get the account titulars
      *
      * @return ( The titulars )
@@ -235,14 +199,6 @@ public class Account implements Serializable{
         return new ArrayList<Client>(this.titulars);
     }
 
-    /**
-     * Get the authorizeds
-     *
-     * @return ( the authorizeds )
-     */
-    public List<Client> getAuthorizeds() {
-        return new ArrayList<Client>(this.authorizeds);
-    }
 
     /**
      * Get the account's balance
@@ -270,12 +226,12 @@ public class Account implements Serializable{
      * @return (the account id)
      * @author runix
      */
-    public final AccountHandler getId() {
-        return this.id;
+    public final AccountHandler getAccountHandler() {
+        return this.accountHandler;
     }
     
-    public void setId(AccountHandler accountHandler){
-    	this.id=(AccountHandler)accountHandler;
+    public void setAccountHandler(AccountHandler accountHandler){
+    	this.accountHandler=(AccountHandler)accountHandler;
     }
     
     public int titularsSize(){
@@ -293,25 +249,5 @@ public class Account implements Serializable{
     	}
     	return exists;
     }
-    
-    public int authorizedSize(){
-    	return authorizeds.size();
-    }
-    
-    public boolean existsAuthorized(String dni){
-    	boolean exists=false;
-    	int i=0;
-    	while(!exists && i<authorizeds.size()){
-    		if(authorizeds.get(i).getDni().compareTo(dni)==0){
-    			exists=true;
-    		}
-    		i++;
-    	}
-    	return exists;
-    }
 
-	public void setAuthorizeds(List<Client> clients) {
-		this.authorizeds=clients;
-		
-	}
 }

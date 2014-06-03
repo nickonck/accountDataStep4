@@ -24,7 +24,7 @@ public class JPAAccountHandlerDao implements AccountHandlerDao{
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public List<AccountHandler> getAccountHandlerList() {
-		return em.createQuery("select p from AccountHandler p order b p.id").getResultList();
+		return em.createQuery("select p from AccountHandler p order by p.id").getResultList();
 	}
 
 	@Transactional(readOnly = false)

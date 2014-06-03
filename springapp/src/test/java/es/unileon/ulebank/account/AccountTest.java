@@ -33,7 +33,7 @@ public class AccountTest {
 		handler.setBank(BANK_NUMBER);
 		handler.setDc(DC_NUMBER);
 		handler.setOffice(OFFICE_NUMBER);
-		myAccount.setId(handler);
+		myAccount.setAccountHandler(handler);
 		
 		client1=new Client();
 		client1.setDni(DNI_1);
@@ -107,35 +107,6 @@ public class AccountTest {
 	}
 
 	@Test
-	public void testAddAuthorized() {
-		myAccount.addAuthorized(client1);
-		assertTrue(myAccount.existsAuthorized(DNI_1));
-		assertEquals(myAccount.authorizedSize(),1);
-		
-		myAccount.addAuthorized(client2);
-		assertTrue(myAccount.existsAuthorized(DNI_2));
-		assertEquals(myAccount.authorizedSize(),2);
-		
-		myAccount.addAuthorized(client3);
-		assertEquals(myAccount.authorizedSize(),2);
-	}
-
-	@Test
-	public void testDeleteAuthorized() {
-		List<Client> clients= new ArrayList<Client>();
-		clients.add(client1);
-		clients.add(client2);
-		myAccount.setAuthorizeds(clients);
-		assertTrue(myAccount.deleteAuthorized(DNI_1));
-		assertFalse(myAccount.existsAuthorized(DNI_1));
-		assertTrue(myAccount.deleteAuthorized(DNI_2));
-		assertFalse(myAccount.existsAuthorized(DNI_2));
-		assertFalse(myAccount.deleteAuthorized(DNI_2));
-		assertFalse(myAccount.deleteAuthorized(DNI_1));
-		
-	}
-
-	@Test
 	public void testGetBalance() {
 		assertTrue(myAccount.getBalance()==0.0);
 	}
@@ -149,7 +120,7 @@ public class AccountTest {
 
 	@Test
 	public void testGetId() {
-		assertEquals(myAccount.getId().toString().compareTo(BANK_NUMBER+"-"+OFFICE_NUMBER+"-"+DC_NUMBER+"-"+ACCOUNT_NUMBER),0);
+		assertEquals(myAccount.getAccountHandler().toString().compareTo(BANK_NUMBER+"-"+OFFICE_NUMBER+"-"+DC_NUMBER+"-"+ACCOUNT_NUMBER),0);
 	}
 
 }

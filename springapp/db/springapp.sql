@@ -5,7 +5,7 @@ GRANT ALL ON springapp.* TO springappuser@localhost IDENTIFIED BY 'pspringappuse
 
 USE springapp;
 
-CREATE TABLE accountHandlers (
+CREATE TABLE accounthandlers (
 	Id BIGINT PRIMARY KEY AUTO_INCREMENT,
 	bank varchar(4),
 	office varchar(4),
@@ -15,7 +15,8 @@ CREATE TABLE accountHandlers (
 
 
 CREATE TABLE accounts (
-    id BIGINT PRIMARY KEY,
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+	accountHandler BIGINT,
 		FOREIGN KEY (id)
 		REFERENCES accountHandlers(Id)
 			ON DELETE CASCADE
@@ -26,11 +27,11 @@ CREATE TABLE accounts (
 
 
 CREATE TABLE clients (
-	id varchar(9) PRIMARY KEY,
+	dni varchar(9) PRIMARY KEY,
 	name varchar(50),
-	accountId BIGINT, CONSTRAINT
-		FOREIGN KEY (accountId)
-		REFERENCES accountHandlers(Id)
+	account BIGINT, CONSTRAINT
+		FOREIGN KEY (account)
+		REFERENCES accounts(id)
 			ON DELETE CASCADE
 			ON UPDATE CASCADE
 );

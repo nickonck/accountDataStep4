@@ -35,7 +35,7 @@ public class SimpleAccountManagerTest {
 		handler.setBank(BANK_NUMBER);
 		handler.setDc(DC_NUMBER);
 		handler.setOffice(OFFICE_NUMBER);
-		myAccount.setId(handler);
+		myAccount.setAccountHandler(handler);
 		
 		accountManager.setAccount(myAccount);
 		
@@ -75,21 +75,6 @@ public class SimpleAccountManagerTest {
 		assertTrue(accountManager.removeTitular(DNI_2));
 	}
 
-	@Test
-	public void testAddAuthorized() {
-		accountManager.addAuthorized(client1);
-		assertTrue(accountManager.getAccount().existsAuthorized(DNI_1));
-		accountManager.addAuthorized(client3);
-		assertEquals(accountManager.getAccount().authorizedSize(),1);
-	}
-
-	@Test
-	public void testRemoveAuthorized() {
-		accountManager.addAuthorized(client1);
-		accountManager.addAuthorized(client2);
-		assertTrue(accountManager.removeAuthorized(DNI_1));
-		assertTrue(accountManager.removeAuthorized(DNI_2));
-	}
 
 	@Test
 	public void testChangeOverdraft() {

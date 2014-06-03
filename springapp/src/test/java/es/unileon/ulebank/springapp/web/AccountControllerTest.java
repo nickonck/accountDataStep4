@@ -33,7 +33,7 @@ public class AccountControllerTest {
 		handler.setBank(BANK_NUMBER);
 		handler.setDc(DC_NUMBER);
 		handler.setOffice(OFFICE_NUMBER);
-		myAccount.setId(handler);
+		myAccount.setAccountHandler(handler);
 		
 		accountManager.setAccount(myAccount);
 		controller.setAccountManager(accountManager);

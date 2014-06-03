@@ -13,9 +13,5 @@ public interface AccountManager extends Serializable{
 	
 	public boolean removeTitular(String clientDni);
 	
-	public void addAuthorized(Client authorized);
-	
-	public boolean removeAuthorized(String clientDni);
-	
 	public void changeOverdraft(double newOverdraft);
 }

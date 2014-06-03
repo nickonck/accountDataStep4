@@ -8,10 +8,10 @@ import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import es.unileon.ulebank.account.Account;
+import es.unileon.ulebank.client.Client;
 
-@Repository(value = "accountDao")
-public class JPAAccountDao implements AccountDao{
+@Repository("clientDao")
+public class JPAClientDao implements ClientDao{
 	
 	private EntityManager em=null;
 
@@ -19,16 +19,18 @@ public class JPAAccountDao implements AccountDao{
 	public void setEntityManager(EntityManager em){
 		this.em = em;
 	}
-	
+
+	@Override
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
-	public List<Account> getAccountList() {
-		return em.createQuery("select p from Account p order by p.id").getResultList();
+	public List<Client> getClientList() {
+		return em.createQuery("select p from Client p order by p.id").getResultList();
 	}
 
+	@Override
 	@Transactional(readOnly = false)
-	public void saveAccount(Account account) {
-		em.merge(account);
+	public void saveClient(Client client) {
+		em.merge(client);
 	}
 
 }

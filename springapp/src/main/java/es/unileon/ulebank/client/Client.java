@@ -3,17 +3,26 @@
 
 package es.unileon.ulebank.client;
 
+import java.math.BigInteger;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 
 /**
  *Class tha provides the basic gestion data of a client in a bank
  * 
  * @author Gonzalo Nicolas Barreales
  */
+@Entity
+@Table(name="clients")
 public class Client {
     
     /**
      * Identifier of the client
      */
+	@Id
     private String dni;
     
     /**
@@ -21,6 +30,7 @@ public class Client {
      */
     private String name;
     
+    private BigInteger account;
     /**
      * Constructor of client. Receive the id and initilize the list of accounts
      * 
@@ -45,6 +55,15 @@ public class Client {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public BigInteger getAccount() {
+		return account;
+	}
+
+	public void setAccount(BigInteger account) {
+		this.account = account;
+	}
     
+	
     
 }

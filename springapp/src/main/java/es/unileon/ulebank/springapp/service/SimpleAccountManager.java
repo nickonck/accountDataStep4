@@ -34,17 +34,6 @@ public class SimpleAccountManager implements AccountManager {
 	}
 
 	@Override
-	public void addAuthorized(Client authorized) {
-		account.addAuthorized(authorized);
-	}
-
-	@Override
-	public boolean removeAuthorized(String clientDni) {
-		return account.deleteAuthorized(clientDni);
-		
-	}
-
-	@Override
 	public void changeOverdraft(double overdraft) {
 		account.setMaxOverdraft(overdraft);		
 	}

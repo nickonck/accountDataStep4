@@ -18,7 +18,7 @@
        </bean>
        
        <bean id="myAccount" class="es.unileon.ulebank.account.Account">
-       	<property name="id">
+       	<property name="accountHandler">
        		<ref bean="accountHandler"/>
        	</property>
        	<property name="maxOverdraft" value="0.0"/>
