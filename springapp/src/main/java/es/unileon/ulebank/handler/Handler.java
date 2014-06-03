@@ -2,11 +2,13 @@
  group.*/
 package es.unileon.ulebank.handler;
 
+import java.io.Serializable;
+
 /**
  * Handler pattern.
  * @author runix
  */
-public interface Handler {
+public interface Handler extends Serializable{
 
     /**
      * Compare the actual handler with another

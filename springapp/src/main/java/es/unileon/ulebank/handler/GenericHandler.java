@@ -11,6 +11,10 @@ package es.unileon.ulebank.handler;
 public class GenericHandler implements Handler {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
      * Generic id
      */
     private final String id;

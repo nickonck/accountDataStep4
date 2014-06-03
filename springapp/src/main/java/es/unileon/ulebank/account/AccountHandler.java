@@ -2,17 +2,38 @@
  group.*/
 package es.unileon.ulebank.account;
 
+import java.math.BigInteger;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import es.unileon.ulebank.handler.Handler;
 
 
 /**
  *
- * @author runix
+ * @author 
  */
+@Entity
+@Table(name="accountHandlers")
 public class AccountHandler implements Handler {
 
-    private static final String SEPARATOR = "-";
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
+	private static final String SEPARATOR = "-";
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "Id")
+    private BigInteger id;
+    
 	/**
      * The account number, the number of digits of this number is given by {
      *
@@ -72,7 +93,17 @@ public class AccountHandler implements Handler {
         return this.toString().compareTo(another.toString());
     }
 
-    /**
+    
+    
+    public BigInteger getId() {
+		return id;
+	}
+
+	public void setId(BigInteger id) {
+		this.id = id;
+	}
+
+	/**
      *
      * @return
      */

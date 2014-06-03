@@ -3,17 +3,27 @@ package es.unileon.ulebank.account;
 import es.unileon.ulebank.client.Client;
 import es.unileon.ulebank.handler.Handler;
 
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
 
 import org.apache.log4j.Logger;
 
 /**
  *
- * @author runix
+ * @author 
  */
+@Entity
+@Table(name="accounts")
 public class Account implements Serializable{
 
     /**
@@ -29,7 +39,10 @@ public class Account implements Serializable{
     /**
      * The account identifier
      */
-    private Handler id;
+    @Id
+    @OneToOne
+    @PrimaryKeyJoinColumn(name = "id", referencedColumnName = "Id")
+    private AccountHandler id;
 
     /**
      * The account balance
@@ -68,6 +81,7 @@ public class Account implements Serializable{
     	this.authorizeds = new ArrayList<Client>();
     	this.titulars = new ArrayList<Client>();
     }
+ 
 
     /**
      * Set the max account's overdraft
@@ -256,12 +270,12 @@ public class Account implements Serializable{
      * @return (the account id)
      * @author runix
      */
-    public final Handler getId() {
+    public final AccountHandler getId() {
         return this.id;
     }
     
-    public void setId(Handler accountHandler){
-    	this.id=accountHandler;
+    public void setId(AccountHandler accountHandler){
+    	this.id=(AccountHandler)accountHandler;
     }
     
     public int titularsSize(){
